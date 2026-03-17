@@ -1,0 +1,13 @@
+{
+  "name": "nuxt-agent-example",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "npx nuxi dev",
+    "build": "npx nuxi build",
+    "start": "npx nuxi start"
+  },
+  "dependencies": {
+    "nuxt": "3"
+  }
+}
