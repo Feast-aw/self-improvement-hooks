@@ -2,6 +2,7 @@ import Fastify from 'fastify'
 import multipart from 'fastify-multipart'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
+import authRoutes from './auth'
 
 const app = Fastify()
 app.register(multipart)
@@ -41,3 +42,6 @@ const start = async () => {
 }
 
 start()
+
+// auth routes
+authRoutes(app)
