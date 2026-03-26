@@ -3,9 +3,11 @@ import multipart from 'fastify-multipart'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import authRoutes from './auth'
+import cookie from 'fastify-cookie'
 
 const app = Fastify()
 app.register(multipart)
+app.register(cookie)
 
 app.get('/api/health', async () => ({ status: 'ok' }))
 
@@ -45,3 +47,16 @@ start()
 
 // auth routes
 authRoutes(app)
+
+// example protected route
+app.get('/api/me', async (req, reply) => {
+  try {
+    const token = (req.cookies && req.cookies.token) || null
+    if (!token) return reply.status(401).send({ error: 'unauthenticated' })
+    const jwt = require('jsonwebtoken')
+    const payload = jwt.verify(token, process.env.JWT_SECRET || 'devsecret')
+    return { ok: true, user: payload }
+  } catch (err) {
+    return reply.status(401).send({ error: 'invalid token' })
+  }
+})
